@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TETRIS GAME</title>
+    <style>
+        * {
+            font-family: 'Press Start 2P', cursive;
+        }
+        body {
+            background-image: url("image/background.jpg");
+        }
+        .main_play {
+            display: grid; /*hiển thị dạng lưới*/
+            grid-template-columns: 450px 250px;/*lưới có 2 cột rộng 350px và 250px*/
+            justify-content: center;/*căn chỉnh các elemet giữa hoặc trái phải*/
+        }
+        .side_bar {
+            display: flex;/*hiển thị dưới dạng vùng chứa linh hoạt các khối div*/
+            flex-direction: column; /*đặt các khối div hiển thị theo chiều dọc, dưới dạng cột*/
+            justify-content: space-between;
+            font-display: red;
+        }
+        h1 {
+            font-size: 50px;
+            color:burlywood;
+        }
+        p {
+            font-size: 25px;
+            color: burlywood;
+        }
+        #frame {
+            border: 3px solid black;
+            background-color:beige;
+        }
+        .play_btn {
+            background-color: beige;
+            font-size: 25px;
+            padding: 10px 20px;
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="main_play">
+        <canvas id="frame"></canvas>
+        <div class="side_bar">
+            <div>
+                <h1>TETRIS</h1>
+                <p>Score: <span id="score">0</span></p>
+            </div>
+            <button class="play_btn">Play</button>
+        </div>
+    </div>
+    <script src="TETRIS_GAME.js"></script>
+</body>
+</html>
