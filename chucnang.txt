@@ -1,0 +1,6 @@
+Ứng dụng game xếp hình trên web html
+Trò chơi sẽ có 1 khung trò chơi, tên trò chơi, điểm số, khung brick tiếp theo, nút "play"
+Khi chơi sẽ có đối tượng là các viên gạch với các hình dạng khác nhau, di chuyển từ trên xuống dưới
+
+Chức năng chơi 1 người theo level
+Mỗi level tương ưn
