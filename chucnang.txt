@@ -12,3 +12,5 @@ Chức năng:
 - Trò chơi kết thúc khi các viên gạch xếp chồng lên nhau kịch khung trò chơi.
 - Game dành cho 1 người chơi, chơi theo level
 - Mỗi level tương ứng với tốc độ rơi của viên gạch, người chơi có thể tùy chọn tốc độ rơi của viên gạch
+Bổ sung chức năng chúc mừng người chơi chiến thắng bản thân:
+- Người chơi sẽ chọn mức điểm tối đa mình có thể đạt được và thông báo người chơi chiến thắng
