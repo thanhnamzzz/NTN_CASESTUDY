@@ -20,7 +20,7 @@
         .side_bar {
             display: flex;/*hiển thị dưới dạng vùng chứa linh hoạt các khối div*/
             flex-direction: column; /*đặt các khối div hiển thị theo chiều dọc, dưới dạng cột*/
-            justify-content: space-between;
+            justify-content:space-between;
             font-display: red;
         }
         h1 {
@@ -41,7 +41,8 @@
             padding: 10px 20px;
         }
     </style>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- Link font Press của google font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"> 
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
@@ -52,6 +53,10 @@
             <div>
                 <h1>TETRIS</h1>
                 <p>Score: <span id="score">0</span></p>
+            </div>
+            <div>
+                <p style="font-size: 20px;">Next Brick</p>
+                <canvas id="next_brick"></canvas>
             </div>
             <button class="play_btn">Play</button>
         </div>

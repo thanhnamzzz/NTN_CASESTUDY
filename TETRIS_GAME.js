@@ -8,6 +8,42 @@ const board = canvas.getContext(`2d`);
 board.canvas.width = columns * block_size;
 board.canvas.height = rows * block_size;
 
+const col_next = 4;
+const row_next = 4;
+const nextbrick = document.getElementById(`next_brick`);
+const nb = nextbrick.getContext(`2d`);
+nb.canvas.width = col_next * block_size;
+nb.canvas.height = row_next * block_size;
+
+class Brick {
+
+}
+
+class nextBrick {
+    constructor(nb) {
+        this.nb = nb;
+        this.grid_n = this.whiteBoardnext();
+    }
+    whiteBoardnext() {
+        return Array(row_next).fill(Array(col_next).fill(white_color_id));
+    }
+    drawCell_n(xAxis_n, yAxis_n, colorId_n) {
+        this.nb.fillStyle = color_box[colorId_n] || color_box[white_color_id];
+        this.nb.fillRect(xAxis_n*block_size, yAxis_n*block_size, block_size, block_size);
+        this.nb.strokeStyle = "#000000";
+        this.nb.strokeRect(xAxis_n*block_size, yAxis_n*block_size, block_size, block_size);
+        this.nb.strokeStyle = "#FFFFFF";
+        this.nb.strokeRect(xAxis_n*block_size+2, yAxis_n*block_size+2, block_size-4, block_size-4);
+    }
+    drawFrame_n() {
+        for (let row = 0; row < this.grid_n.length; row++){
+            for (let col = 0; col < this.grid_n[0].length; col++) {
+                this.drawCell_n(col, row, white_color_id);
+            }
+        }
+    }
+}
+
 class frame {
     constructor(board){
         this.board = board;
@@ -32,7 +68,10 @@ class frame {
         }
     }
 }
+
 test = new frame(board);
 test.drawFrame();
-test.drawCell(1,1,5);
-console.table(test.grid);
+test.drawCell(3,1,2);
+test1 = new nextBrick(nb);
+test1.drawFrame_n();
+test1.drawCell_n(1,2,1);
