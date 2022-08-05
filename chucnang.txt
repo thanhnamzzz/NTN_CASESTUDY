@@ -1,5 +1,6 @@
 Ứng dụng game xếp hình trên web html
-Trò chơi sẽ có 1 khung trò chơi, tên trò chơi, điểm số, khung brick tiếp theo, nút "play"
+Chức năng:
+- Trò chơi sẽ có 1 khung trò chơi, tên trò chơi, điểm số, khung brick tiếp theo, nút "play"
 - Khi chơi sẽ có đối tượng là các viên gạch với các hình dạng khác nhau, di chuyển từ trên xuống dưới với khoảng thời gian nhất định.
 - Người dùng sử dụng các phím mũi trên trái phải để điều khiển các viên gạch đi sang trái hoặc sang phải
 - Phím mũi tên hướng xuống dưới để điều khiển viên gạch hướng xuống dưới
@@ -9,5 +10,5 @@ Trò chơi sẽ có 1 khung trò chơi, tên trò chơi, điểm số, khung bri
 - Các viên gạch bên trên sẽ di chuyển (rơi xuống dưới) tới khi chạm vào viên gạch gần nhất hoặc tới đáy khung trò chơi
 - Khung brick tiếp theo sẽ hiển thị viên gạch tiếp theo sẽ xuất hiện.
 - Trò chơi kết thúc khi các viên gạch xếp chồng lên nhau kịch khung trò chơi.
-- Chức năng chơi 1 người theo level
-- Mỗi level tương ứng với tốc độ rơi của viên gạch
+- Game dành cho 1 người chơi, chơi theo level
+- Mỗi level tương ứng với tốc độ rơi của viên gạch, người chơi có thể tùy chọn tốc độ rơi của viên gạch
