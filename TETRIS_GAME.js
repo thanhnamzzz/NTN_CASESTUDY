@@ -216,9 +216,6 @@ class drawBrick_next {
         this.id = id; //id chạy từ 0-3
         this.layoutBricknext = Brick[id]; //gọi hình dạng viên gạch
         this.activeBricknext = 0; //biến lưu lại hướng của viên gạch - gán tạm giá trị là 0 (chạy từ 0-6)
-        //tạo 2 biến để lưu vị trí hiện tại của viên gạch
-        // this.colNow = 0;
-        // this.rowNow = 0;
     }
     draw_next () {
         for (let row = 0; row < this.layoutBricknext[this.activeBricknext].length; row++){
@@ -266,8 +263,8 @@ class drawBrick {
         this.layoutBrick = Brick[id]; //gọi hình dạng viên gạch
         this.activeBrick = 0; //biến lưu lại hướng của viên gạch - gán tạm giá trị là 0
         //tạo 2 biến để lưu vị trí hiện tại của viên gạch
-        this.colNow = 0;
-        this.rowNow = 0;
+        this.colNow = 3;
+        this.rowNow = 9;
     }
     draw () {
         for (let row = 0; row < this.layoutBrick[this.activeBrick].length; row++){
@@ -279,11 +276,41 @@ class drawBrick {
             }
         }
     }
+    clearBrick() {
+        for (let row = 0; row < this.layoutBrick[this.activeBrick].length; row++){
+            for (let col = 0; col < this.layoutBrick[this.activeBrick][0].length; col++){
+                let colorBrick = this.layoutBrick[this.activeBrick][row][col];
+                if (colorBrick !== white_color_id){
+                    test.drawCell(col + this.colNow,row + this.rowNow,white_color_id);
+                }
+            }
+        }
+    }
+    //action game
+    moveLeft() {
+        this.clearBrick();
+        this.colNow--;
+        this.draw();
+    }
+    moveRight() {
+        this.clearBrick();
+        this.colNow++;
+        this.draw();
+    }
+    moveDown() {
+        this.clearBrick();
+        this.rowNow++;
+        this.draw();
+    }
+    rotate() {
+        this.clearBrick();
+        this.activeBrick = (this.activeBrick + 1) % 4;
+        this.draw();
+    }
 }
 
 test = new frame(board);
 test.drawFrame();
-// test.drawCell(3,1,2);
 brick = new drawBrick(4);
 brick.draw();
 
