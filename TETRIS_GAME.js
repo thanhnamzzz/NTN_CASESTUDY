@@ -188,7 +188,7 @@ const Brick = [
 class nextBrick {
     constructor(nb) {
         this.nb = nb;
-        this.grid_n = this.whiteBoardnext();
+        this.grid_next = this.whiteBoardnext();
     }
     whiteBoardnext() {
         return Array(row_next).fill(Array(col_next).fill(white_color_id));
@@ -202,9 +202,31 @@ class nextBrick {
         this.nb.strokeRect(xAxis_n*block_size+2, yAxis_n*block_size+2, block_size-4, block_size-4);
     }
     drawFrame_n() {
-        for (let row = 0; row < this.grid_n.length; row++){
-            for (let col = 0; col < this.grid_n[0].length; col++) {
+        for (let row = 0; row < this.grid_next.length; row++){
+            for (let col = 0; col < this.grid_next[0].length; col++) {
                 this.drawCell_n(col, row, white_color_id);
+            }
+        }
+    }
+}
+
+//tạo lớp vẽ viên gạch tiếp theo trên khung next brick
+class drawBrick_next {
+    constructor (id) {
+        this.id = id; //id chạy từ 0-3
+        this.layoutBricknext = Brick[id]; //gọi hình dạng viên gạch
+        this.activeBricknext = 0; //biến lưu lại hướng của viên gạch - gán tạm giá trị là 0 (chạy từ 0-6)
+        //tạo 2 biến để lưu vị trí hiện tại của viên gạch
+        // this.colNow = 0;
+        // this.rowNow = 0;
+    }
+    draw_next () {
+        for (let row = 0; row < this.layoutBricknext[this.activeBricknext].length; row++){
+            for (let col = 0; col < this.layoutBricknext[this.activeBricknext][0].length; col++){
+                let colorBrick = this.layoutBricknext[this.activeBricknext][row][col];
+                if (colorBrick !== white_color_id){
+                    testNext.drawCell_n(col,row,this.id);
+                }
             }
         }
     }
@@ -237,7 +259,7 @@ class frame {
     }
 }
 
-//tạo lớp vẽ viên gạch trên khung chính trò chơi và khung next brick
+//tạo lớp vẽ viên gạch trên khung chính trò chơi
 class drawBrick {
     constructor (id) {
         this.id = id;
@@ -262,10 +284,12 @@ class drawBrick {
 test = new frame(board);
 test.drawFrame();
 // test.drawCell(3,1,2);
-test1 = new nextBrick(nb);
-test1.drawFrame_n();
-test1.drawCell_n(1,2,1);
-brick_n = new drawBrick(0);
-brick_n.draw();
-brick = new drawBrick(0);
+brick = new drawBrick(4);
 brick.draw();
+
+testNext = new nextBrick(nb);
+testNext.drawFrame_n();
+// testNew.drawCell_n(1,2,1);
+brick_n = new drawBrick_next(4);
+// brick_n.drawCell_n(3,1,2);
+brick_n.draw_next();
