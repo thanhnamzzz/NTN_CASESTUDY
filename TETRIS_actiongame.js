@@ -1,0 +1,8 @@
+class action {
+    moveRight() {
+
+    }
+    moveLeft() {
+        
+    }
+}
