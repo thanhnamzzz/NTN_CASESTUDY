@@ -1,20 +1,24 @@
-const keyAction = [
-    'ArrowLeft',
-    'ArrowRight',
-    'ArrowDown',
-    'ArrowUp',
-]
-document.addEventListener(keyAction, actionBrick);
-function actionBrick() {
-    // if (keyAction = 'ArrowLeft') {
-    //     drawBrick.moveLeft();
-    // }
-    // if (keyAction = 'ArrowRight') {
-    //     drawBrick.moveRight();
-    // }
-    switch (keyAction) {
-        case keyAction[0]:
-            drawBrick.moveLeft();
+const keyAction = {
+    Left :'ArrowLeft',
+    Right :'ArrowRight',
+    Down :'ArrowDown',
+    Up :'ArrowUp',
+}
+document.addEventListener('keypress', (e) => {
+    switch (e.code) {
+        case keyAction.Left:
+            brick.moveLeft();
+            break;
+        case keyAction.Right:
+            brick.moveRight();
+            break;
+        case keyAction.Down:
+            brick.moveDown();
+            break;
+        case keyAction.Up:
+            brick.rotate();
+            break;
+        default:
             break;
     }
-}
+});

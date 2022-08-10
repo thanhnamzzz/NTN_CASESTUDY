@@ -250,7 +250,7 @@ class frame {
     drawFrame() {
         for (let row = 0; row < this.grid.length; row++){
             for (let col = 0; col < this.grid[0].length; col++) {
-                this.drawCell(col, row, white_color_id);
+                this.drawCell(col, row, this.grid[row][col]);
             }
         }
     }
@@ -264,14 +264,14 @@ class drawBrick {
         this.activeBrick = 0; //biến lưu lại hướng của viên gạch - gán tạm giá trị là 0
         //tạo 2 biến để lưu vị trí hiện tại của viên gạch
         this.colNow = 3;
-        this.rowNow = 9;
+        this.rowNow = -1;
     }
     draw () {
         for (let row = 0; row < this.layoutBrick[this.activeBrick].length; row++){
             for (let col = 0; col < this.layoutBrick[this.activeBrick][0].length; col++){
                 let colorBrick = this.layoutBrick[this.activeBrick][row][col];
                 if (colorBrick !== white_color_id){
-                    test.drawCell(col + this.colNow,row + this.rowNow,this.id);
+                    FrameBoard.drawCell(col + this.colNow,row + this.rowNow,this.id);
                 }
             }
         }
@@ -281,38 +281,81 @@ class drawBrick {
             for (let col = 0; col < this.layoutBrick[this.activeBrick][0].length; col++){
                 let colorBrick = this.layoutBrick[this.activeBrick][row][col];
                 if (colorBrick !== white_color_id){
-                    test.drawCell(col + this.colNow,row + this.rowNow,white_color_id);
+                    FrameBoard.drawCell(col + this.colNow,row + this.rowNow,white_color_id);
                 }
             }
         }
     }
     //action game
     moveLeft() {
-        this.clearBrick();
-        this.colNow--;
-        this.draw();
+        if (this.check(this.rowNow, this.colNow - 1, this.layoutBrick[this.activeBrick]) == false){
+            this.clearBrick();
+            this.colNow--;
+            this.draw();
+        }
     }
     moveRight() {
-        this.clearBrick();
-        this.colNow++;
-        this.draw();
+        if (this.check(this.rowNow, this.colNow + 1, this.layoutBrick[this.activeBrick]) == false){
+            this.clearBrick();
+            this.colNow++;
+            this.draw();
+        }
     }
     moveDown() {
-        this.clearBrick();
-        this.rowNow++;
-        this.draw();
+        if (this.check(this.rowNow + 1, this.colNow, this.layoutBrick[this.activeBrick]) == false){
+            this.clearBrick();
+            this.rowNow++;
+            this.draw();
+            return;
+        }
+        this.felldown();
+        randomBrick();
     }
     rotate() {
-        this.clearBrick();
-        this.activeBrick = (this.activeBrick + 1) % 4;
-        this.draw();
+        if (this.check(this.rowNow, this.colNow, this.layoutBrick[(this.activeBrick + 1) % 4]) == false){
+            this.clearBrick();
+            this.activeBrick = (this.activeBrick + 1) % 4;
+            this.draw();
+        }
+    }
+    //Kiểm tra va chạm
+    check(nextRow, nextCol, nextLayout) {
+        for (let row = 0; row < nextLayout.length; row++){
+            for (let col = 0; col < nextLayout[0].length; col++) {
+                if (nextLayout[row][col] != white_color_id) {
+                    if (
+                        col + nextCol < 0 ||
+                        col + nextCol >= columns ||
+                        row + nextRow >= rows
+                    ){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    felldown (){ //update lại màu của frame khi brick rơi xuống đáy
+        for (let row = 0; row < this.layoutBrick[this.activeBrick].length; row++){
+            for (let col = 0; col < this.layoutBrick[this.activeBrick][0].length; col++){
+                if (this.layoutBrick[this.activeBrick][row][col] !== white_color_id){
+                    FrameBoard.grid[row + this.rowNow][col + this.colNow] = this.id;
+                }
+            }
+        }
+        FrameBoard.drawFrame();
     }
 }
 
-test = new frame(board);
-test.drawFrame();
-brick = new drawBrick(4);
+function randomBrick() {
+    brick = new drawBrick(Math.floor(Math.random()*10) % Brick.length);
+}
+
+FrameBoard = new frame(board);
+FrameBoard.drawFrame();
+randomBrick();
 brick.draw();
+setInterval(function() {brick.moveDown()},1000);
 
 testNext = new nextBrick(nb);
 testNext.drawFrame_n();
@@ -320,3 +363,29 @@ testNext.drawFrame_n();
 brick_n = new drawBrick_next(4);
 // brick_n.drawCell_n(3,1,2);
 brick_n.draw_next();
+
+//Action Game
+const keyAction = {
+    Left :'ArrowLeft',
+    Right :'ArrowRight',
+    Down :'ArrowDown',
+    Up :'ArrowUp',
+}
+document.addEventListener('keydown', (e) => {
+    switch (e.code) {
+        case keyAction.Left:
+            brick.moveLeft();
+            break;
+        case keyAction.Right:
+            brick.moveRight();
+            break;
+        case keyAction.Down:
+            brick.moveDown();
+            break;
+        case keyAction.Up:
+            brick.rotate();
+            break;
+        default:
+            break;
+    }
+});
