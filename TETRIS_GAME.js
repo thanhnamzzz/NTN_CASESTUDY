@@ -1,7 +1,4 @@
-let level = +prompt("Chọn level (từ 1 đến 10)");
-document.getElementById("selectlevel").innerHTML = "Level " + level;
 
-let scoreNow = 0;
 const columns = 10;
 const rows = 20;
 const block_size = 25;
@@ -188,6 +185,7 @@ const Brick = [
     ],
 ]
 
+
 //tạo 1 lớp hiển thị viên gạch tiếp theo
 class nextBrick {
     constructor(nb) {
@@ -214,6 +212,7 @@ class nextBrick {
     }
 }
 
+
 //tạo lớp vẽ viên gạch tiếp theo trên khung next brick
 class drawBrick_next {
     constructor (id) {
@@ -233,12 +232,16 @@ class drawBrick_next {
     }
 }
 
+
+
 //tạo lớp hiển thị trên khung chính trò chơi
 class frame {
     constructor(board){
         this.scoreNow = 0;
         this.board = board;
         this.grid = this.whiteBoard();
+        this.result = 0;
+        this.gameOver = false;
     }
     whiteBoard() {
         // return Array(rows).Array((columns).fill(white_color_id));
@@ -263,23 +266,59 @@ class frame {
     //check hàng hoàn thiện
     completeRows() {
         const newGrid = FrameBoard.grid.filter((row) => {
-            return row.some(col => col === white_color_id);
+            return row.some((col) => col === white_color_id);
         })
         const newScore = rows - newGrid.length;
         const newRow = Array.from({length:newScore}, () => Array(columns).fill(white_color_id));
         FrameBoard.grid = [...newRow, ...newGrid];
+        this.scoreDisplay(newScore);
+
+        // const newGrid = FrameBoard.grid.filter((row) => {
+        //     for (col = 0; col < 10; col++) {
+
+        //     }
+        // })
+
+        // const newGrid = [];
         // let count = 0;
-        // for (let row = 0; row < this.grid.length ; row++) {
-        //     for (let col = 0; col < this.grid[row].length; col++){
-        //         if (this.grid[row][col] != white_color_id){
+        // for (let row = 0; row < this.grid.length; row++){
+        //     newGrid[row]=[];
+        //     for (let col = 0; col < this.grid[0].length; col++){
+        //         if (this.grid[row][col] !== white_color_id){
         //             count += 1;
+        //         } else {
+        //             continue;
+        //         }
+        //         if (count === 10) {
+        //             for (col = 0; col <this.grid[row].length; col++){
+        //                 newGrid[row].push(this.grid[row][col]);
+        //             }
         //         }
         //     }
-        //     if (count == 10){
-        //         this.scoreNow += 1;
-        //     }
-        //     document.getElementById("score").innerHTML = this.scoreNow;
+        //     return newGrid;
         // }
+        // const newScore = rows - newGrid.length;
+        // const newRow = Array.from({length:newScore}, () => Array(columns).fill(white_color_id));
+        // FrameBoard.grid = [...newRow, ...newGrid];
+    }
+
+    scoreDisplay (newScore) {
+        this.scoreNow += newScore;
+        document.getElementById(`score`).innerHTML = this.scoreNow;
+        // let result = this.scoreNow;
+        // if (brick.felldown()){
+        //     alert(`Trò chơi kết thúc! Bạn được ` + this.scoreNow + ` điểm.`);
+        // }
+    }
+    checkGameOver () {
+        this.gameOver = true;
+        alert(`Trò chơi kết thúc! Bạn được ` + this.scoreNow + ` điểm.`);
+    }
+    reset() {
+        this.scoreNow = 0;
+        this.grid = this.whiteBoard();
+        this.drawFrame();
+        this.gameOver = false;
     }
 }
 
@@ -291,7 +330,7 @@ class drawBrick {
         this.activeBrick = 0; //biến lưu lại hướng của viên gạch - gán tạm giá trị là 0
         //tạo 2 biến để lưu vị trí hiện tại của viên gạch
         this.colNow = 3;
-        this.rowNow = -1;
+        this.rowNow = -2;
     }
     draw () {
         for (let row = 0; row < this.layoutBrick[this.activeBrick].length; row++){
@@ -336,7 +375,9 @@ class drawBrick {
             return;
         }
         this.felldown();
-        randomBrick();
+        if (FrameBoard.gameOver == false){
+            randomBrick();
+        }
     }
     rotate() {
         if (this.check(this.rowNow, this.colNow, this.layoutBrick[(this.activeBrick + 1) % 4]) == false){
@@ -349,7 +390,7 @@ class drawBrick {
     check(nextRow, nextCol, nextLayout) {
         for (let row = 0; row < nextLayout.length; row++){
             for (let col = 0; col < nextLayout[0].length; col++) {
-                if (nextLayout[row][col] != white_color_id) {
+                if (nextLayout[row][col] != white_color_id && nextRow >=0) {
                     if (
                         col + nextCol < 0 ||
                         col + nextCol >= columns ||
@@ -364,6 +405,10 @@ class drawBrick {
         return false;
     }
     felldown (){ //update lại màu của frame khi brick rơi xuống đáy
+        if (this.rowNow <= 0){
+            FrameBoard.checkGameOver();
+            return;
+        }
         for (let row = 0; row < this.layoutBrick[this.activeBrick].length; row++){
             for (let col = 0; col < this.layoutBrick[this.activeBrick][0].length; col++){
                 if (this.layoutBrick[this.activeBrick][row][col] !== white_color_id){
@@ -380,11 +425,25 @@ function randomBrick() {
     brick = new drawBrick(Math.floor(Math.random()*10) % Brick.length);
 }
 
+
+
 FrameBoard = new frame(board);
 FrameBoard.drawFrame();
 randomBrick();
-brick.draw();
-// setInterval(function() {brick.moveDown()},1000 - level*100);
+// brick.draw();
+function play() {
+    randomBrick();
+    FrameBoard.reset();
+    let level = +prompt("Chọn level (từ 1 đến 10)");
+    document.getElementById("selectlevel").innerHTML = "Level " + level;
+    let action = setInterval(function() {
+        if (FrameBoard.gameOver == false) {
+            brick.moveDown();
+        }else {
+            clearInterval(action);
+        }
+        },1000 - level*100);
+}
 
 testNext = new nextBrick(nb);
 testNext.drawFrame_n();
@@ -392,6 +451,8 @@ testNext.drawFrame_n();
 brick_n = new drawBrick_next(4);
 // brick_n.drawCell_n(3,1,2);
 brick_n.draw_next();
+
+
 
 //Action Game
 const keyAction = {
@@ -401,20 +462,22 @@ const keyAction = {
     Up :'ArrowUp',
 }
 document.addEventListener('keydown', (event) => {
-    switch (event.code) {
-        case keyAction.Left:
-            brick.moveLeft();
-            break;
-        case keyAction.Right:
-            brick.moveRight();
-            break;
-        case keyAction.Down:
-            brick.moveDown();
-            break;
-        case keyAction.Up:
-            brick.rotate();
-            break;
-        default:
-            break;
+    if (FrameBoard.gameOver == false) {
+        switch (event.code) {
+            case keyAction.Left:
+                brick.moveLeft();
+                break;
+            case keyAction.Right:
+                brick.moveRight();
+                break;
+            case keyAction.Down:
+                brick.moveDown();
+                break;
+            case keyAction.Up:
+                brick.rotate();
+                break;
+            default:
+                break;
+        }
     }
 });
