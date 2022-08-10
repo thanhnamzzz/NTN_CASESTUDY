@@ -429,8 +429,6 @@ function randomBrick() {
 
 FrameBoard = new frame(board);
 FrameBoard.drawFrame();
-randomBrick();
-// brick.draw();
 function play() {
     randomBrick();
     FrameBoard.reset();
@@ -447,9 +445,7 @@ function play() {
 
 testNext = new nextBrick(nb);
 testNext.drawFrame_n();
-// testNew.drawCell_n(1,2,1);
 brick_n = new drawBrick_next(4);
-// brick_n.drawCell_n(3,1,2);
 brick_n.draw_next();
 
 
