@@ -1,3 +1,7 @@
+let level = +prompt("Chọn level (từ 1 đến 10)");
+document.getElementById("selectlevel").innerHTML = "Level " + level;
+
+let scoreNow = 0;
 const columns = 10;
 const rows = 20;
 const block_size = 25;
@@ -232,6 +236,7 @@ class drawBrick_next {
 //tạo lớp hiển thị trên khung chính trò chơi
 class frame {
     constructor(board){
+        this.scoreNow = 0;
         this.board = board;
         this.grid = this.whiteBoard();
     }
@@ -254,6 +259,27 @@ class frame {
                 this.drawCell(col, row, this.grid[row][col]);
             }
         }
+    }
+    //check hàng hoàn thiện
+    completeRows() {
+        const newGrid = FrameBoard.grid.filter((row) => {
+            return row.some(col => col === white_color_id);
+        })
+        const newScore = rows - newGrid.length;
+        const newRow = Array.from({length:newScore}, () => Array(columns).fill(white_color_id));
+        FrameBoard.grid = [...newRow, ...newGrid];
+        // let count = 0;
+        // for (let row = 0; row < this.grid.length ; row++) {
+        //     for (let col = 0; col < this.grid[row].length; col++){
+        //         if (this.grid[row][col] != white_color_id){
+        //             count += 1;
+        //         }
+        //     }
+        //     if (count == 10){
+        //         this.scoreNow += 1;
+        //     }
+        //     document.getElementById("score").innerHTML = this.scoreNow;
+        // }
     }
 }
 
@@ -327,7 +353,8 @@ class drawBrick {
                     if (
                         col + nextCol < 0 ||
                         col + nextCol >= columns ||
-                        row + nextRow >= rows
+                        row + nextRow >= rows ||
+                        FrameBoard.grid[row + nextRow][col + nextCol] !== white_color_id
                     ){
                         return true;
                     }
@@ -344,6 +371,7 @@ class drawBrick {
                 }
             }
         }
+        FrameBoard.completeRows();
         FrameBoard.drawFrame();
     }
 }
@@ -356,7 +384,7 @@ FrameBoard = new frame(board);
 FrameBoard.drawFrame();
 randomBrick();
 brick.draw();
-setInterval(function() {brick.moveDown()},1000);
+// setInterval(function() {brick.moveDown()},1000 - level*100);
 
 testNext = new nextBrick(nb);
 testNext.drawFrame_n();
