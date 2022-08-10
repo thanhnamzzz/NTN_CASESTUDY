@@ -1,6 +1,6 @@
 const columns = 10;
 const rows = 20;
-const block_size = 40;
+const block_size = 25;
 const color_box = [`red`,`orange`,`green`,`purple`,`blue`,`cyan`,`yellow`,`white`];
 const white_color_id = 7;
 
@@ -236,7 +236,8 @@ class frame {
         this.grid = this.whiteBoard();
     }
     whiteBoard() {
-        return Array(rows).fill(Array(columns).fill(white_color_id));
+        // return Array(rows).Array((columns).fill(white_color_id));
+        return Array.from({length:rows}, () => Array(columns).fill(white_color_id));
     }
     //method vẽ 1 ô gạch
     drawCell(xAxis, yAxis, colorId) {
@@ -281,7 +282,7 @@ class drawBrick {
             for (let col = 0; col < this.layoutBrick[this.activeBrick][0].length; col++){
                 let colorBrick = this.layoutBrick[this.activeBrick][row][col];
                 if (colorBrick !== white_color_id){
-                    FrameBoard.drawCell(col + this.colNow,row + this.rowNow,white_color_id);
+                    FrameBoard.drawCell(col + this.colNow,row + this.rowNow, white_color_id);
                 }
             }
         }
@@ -371,8 +372,8 @@ const keyAction = {
     Down :'ArrowDown',
     Up :'ArrowUp',
 }
-document.addEventListener('keydown', (e) => {
-    switch (e.code) {
+document.addEventListener('keydown', (event) => {
+    switch (event.code) {
         case keyAction.Left:
             brick.moveLeft();
             break;
