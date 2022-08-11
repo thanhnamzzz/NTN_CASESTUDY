@@ -12,12 +12,12 @@ board.canvas.width = columns * block_size;
 board.canvas.height = rows * block_size;
 
 //vẽ khung hiển thị viên gạch tiếp theo
-const col_next = 4;
-const row_next = 4;
-const nextbrick = document.getElementById(`next_brick`);
-const nb = nextbrick.getContext(`2d`);
-nb.canvas.width = col_next * block_size;
-nb.canvas.height = row_next * block_size;
+// const col_next = 4;
+// const row_next = 4;
+// const nextbrick = document.getElementById(`next_brick`);
+// const nb = nextbrick.getContext(`2d`);
+// nb.canvas.width = col_next * block_size;
+// nb.canvas.height = row_next * block_size;
 
 //tạo mảng dữ liệu các viên gạch
 const Brick = [
@@ -211,8 +211,6 @@ class nextBrick {
         }
     }
 }
-
-
 //tạo lớp vẽ viên gạch tiếp theo trên khung next brick
 class drawBrick_next {
     constructor (id) {
@@ -303,12 +301,20 @@ class frame {
     }
 
     scoreDisplay (newScore) {
-        this.scoreNow += newScore;
+        let addScore = 0;
+        if (newScore === 1) {
+            addScore = 1;
+        } else if (newScore === 2){
+            addScore = 3;
+        } else if (newScore === 3){
+            addScore = 5;
+        } else if (newScore === 4){
+            addScore = 8;
+        } else {
+            addScore = 0;
+        }
+        this.scoreNow += addScore;
         document.getElementById(`score`).innerHTML = this.scoreNow;
-        // let result = this.scoreNow;
-        // if (brick.felldown()){
-        //     alert(`Trò chơi kết thúc! Bạn được ` + this.scoreNow + ` điểm.`);
-        // }
     }
     checkGameOver () {
         this.gameOver = true;
@@ -376,7 +382,7 @@ class drawBrick {
         }
         this.felldown();
         if (FrameBoard.gameOver == false){
-            randomBrick();
+            actionBrick();
         }
     }
     rotate() {
@@ -421,18 +427,25 @@ class drawBrick {
     }
 }
 
-function randomBrick() {
+function actionBrick() {
     brick = new drawBrick(Math.floor(Math.random()*10) % Brick.length);
 }
-
-
+// function randomNextBrick() {
+//     brick_n = new drawBrick_next(Math.floor(Math.random()*10) % Brick.length);
+// }
 
 FrameBoard = new frame(board);
 FrameBoard.drawFrame();
+
+// testNext = new nextBrick(nb);
+// testNext.drawFrame_n();
+// // brick_n.draw_next();
+
 function play() {
-    randomBrick();
+    actionBrick();
     FrameBoard.reset();
-    let level = +prompt("Chọn level (từ 1 đến 10)");
+    let level = +prompt("Chọn level (từ 1 đến 6)");
+    alert("HƯỚNG DẪN: \nDùng các phím mũi tên trái, phải và hướng xuống để di chuyển viên gạch sang trái hoặc sang phải hoặc đi xuống. \nSử dụng phím mũi tên hướng lên để xoay viên gạch.")
     document.getElementById("selectlevel").innerHTML = "Level " + level;
     let action = setInterval(function() {
         if (FrameBoard.gameOver == false) {
@@ -440,13 +453,8 @@ function play() {
         }else {
             clearInterval(action);
         }
-        },1000 - level*100);
+        },1000 - level*150);
 }
-
-testNext = new nextBrick(nb);
-testNext.drawFrame_n();
-brick_n = new drawBrick_next(4);
-brick_n.draw_next();
 
 
 
